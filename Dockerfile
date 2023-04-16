@@ -7,12 +7,13 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql && \
 
 # Instalar o pacote zip
 RUN apt-get update && \
-    apt-get install -y zip unzip && \
+    apt-get install -y zip unzip composer && \
     rm -rf /var/lib/apt/lists/*
 
 # Copiar os arquivos do seu aplicativo para o contêiner
 COPY . /var/www/html/
 
+RUN composer install
 # Configurar o servidor Apache com SSL
 
 # Configurar o servidor Apache
@@ -21,9 +22,10 @@ RUN chown -R www-data:www-data /var/www/html/
 RUN chmod -R 755 /var/www/html/
 
 # Instalar dependências com Composer
-COPY composer.json composer.lock /var/www/html/
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install --no-dev --no-scripts --no-autoloader
+#COPY composer.json composer.lock /var/www/html/
+##RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+##   && composer install --no-dev --no-scripts --no-autoloader
+
 
 # Expor as portas 80 e 443 do contêiner
 EXPOSE 81 
