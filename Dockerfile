@@ -12,8 +12,7 @@ RUN apt-get update && \
 
 # Copiar os arquivos do seu aplicativo para o contêiner
 COPY . /var/www/html/
-
-RUN composer install
+ 
 # Configurar o servidor Apache com SSL
 
 # Configurar o servidor Apache
@@ -25,7 +24,7 @@ RUN chmod -R 755 /var/www/html/
 #COPY composer.json composer.lock /var/www/html/
 ##RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 ##   && composer install --no-dev --no-scripts --no-autoloader
-
+COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 # Expor as portas 80 e 443 do contêiner
 EXPOSE 81 
