@@ -3,7 +3,11 @@ FROM php:8.0-apache as builder
 # Instalar o Nano
 RUN docker-php-ext-install mysqli pdo pdo_mysql && \
     docker-php-ext-enable pdo_mysql
- 
+
+# Instalar dependências com Composer
+COPY composer.json composer.lock /var/www/html/
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --no-dev --no-scripts --no-autoloader
 
 # Copiar os arquivos do seu aplicativo para o contêiner
 COPY . /var/www/html/
