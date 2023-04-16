@@ -7,7 +7,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql && \
 
 # Instalar o pacote zip
 RUN apt-get update && \
-    apt-get install -y zip unzip composer && \
+    apt-get install -y zip unzip && \
     rm -rf /var/lib/apt/lists/*
 
 # Copiar os arquivos do seu aplicativo para o contêiner
