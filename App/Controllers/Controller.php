@@ -14,9 +14,9 @@ class Controller extends AuthController
     public function __construct()
     {
         
-       if (empty($_SESSION['logado'])) {
+       /* if (empty($_SESSION['logado'])) {
              (new Router(SITE["base_url"]))->redirect("login"); 
-        } 
+        }  */
         $this->router = new Router(SITE["base_url"]);
         $this->view = new Engine(__DIR__ . '/../../public/web');
         $this->templateError = new Engine(__DIR__ ."/../../public/error");
