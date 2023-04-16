@@ -13,9 +13,7 @@ class Api
 {
 
     private $client;
-    private $url;
-    private $session;
-    private $token;
+    private $url; 
 
     public function __construct()
     {

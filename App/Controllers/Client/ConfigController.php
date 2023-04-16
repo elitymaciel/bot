@@ -2,6 +2,7 @@
 namespace App\Controllers\Client;
  
 use stdClass;
+use App\Models\Api;
 use App\Models\Chat;
 use App\Models\User;
 use App\Models\Client;
@@ -21,30 +22,39 @@ class ConfigController extends ClientController
     public function sessions()
     { 
         $usuario = User::where('email', $_SESSION['email'])->first();
+        $api = Api::where('user_id', $usuario->id)->first();
         $status = new \App\Helpers\Api();
-        echo $status->statusSession(['token' => $usuario->token, 'session' => $usuario->id_session]);
+        echo $status->statusSession(['token' => $api->token, 'session' => $api->session]);
         
     } 
 
     public function start()
     {
         $status = new \App\Helpers\Api();
-        $usuario = User::where('email', $_SESSION['email'])->where('id_session', $_SESSION['session'])->first();
-        $qrcodde = Chat::query('session', $usuario->id_session)->count();
-
-        if($qrcodde){
-            Chat::query('session', $usuario->id_session)->update([ 
+        $usuario = User::where('email', $_SESSION['email'])->first();
+        $api = Api::where('user_id', $usuario->id)->first();
+        $session = Session::query('session', $api->session)->first();
+        if($session){
+            Session::query('session', $api->session)->update([ 
                 'type' => 'loding',
-                'urlcode' => ' '
+                'urlcode' => 's'
             ]);
-            echo  $status->start(['token' => $usuario->token, 'session' => $usuario->id_session]);
-        } 
+            echo  $status->start(['token' => $usuario->token, 'session' => $api->session]);
+        }else {
+            Session::query('session', $api->session)->create([ 
+                'id_session' => $api->session,
+                'type' => 'loding',
+                'urlcode' => 's'
+            ]);
+            echo  $status->start(['token' => $usuario->token, 'session' => $api->session]);
+        }
     }
     
     public function qrcode()
     {
         $usuario = User::where('email', $_SESSION['email'])->first();
-        $qrcode = Session::where('id_session', $usuario->id_session)->first();
+        $api = Api::where('user_id', $usuario->id)->first();
+        $qrcode = Session::where('id_session', $api->session)->first();
         if($qrcode){
             if($qrcode->urlcode > 0){
                 echo  json_encode(['status' => $qrcode->type, 'qrcode' => $qrcode->urlcode]);
