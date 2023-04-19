@@ -7,20 +7,16 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title><?=$this->e($titulo)?> | <?=$this->e($empresa)?></title>
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
+ 
+    <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css"> 
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/menu_cursos.css">
-
+    <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/menu_cursos.css"> 
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-
     <link rel="stylesheet" href="<?= SITE["base_url"] ?>vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="<?= SITE["base_url"] ?>vendor/almasaeed2010/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
     <link href="<?= SITE["base_url"] ?>vendor/almasaeed2010/adminlte/smartwizard/css/smart_wizard.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="<?= SITE["base_url"] ?>vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.css"> 
     
     <?= $this->section('styles')?> 
 
@@ -40,8 +36,7 @@
 
 <body class="hold-transition layout-top-nav">
     <div class="wrapper">
-
-        <!-- Navbar -->
+ 
         <nav class="main-header navbar navbar-expand-md navbar-light navbar-dark">
             <div class="container">
                 <a href="<?= SITE['base_url']?>" class="navbar-brand">
@@ -56,8 +51,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-                    <!-- Left navbar links -->
+                <div class="collapse navbar-collapse order-3" id="navbarCollapse"> 
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a href="<?= SITE['base_url']?>client" class="nav-link">Home</a>
@@ -81,12 +75,8 @@
                     </ul>
  
                 </div>
-
-                <!-- Right navbar links -->
-                <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                    <!-- Messages Dropdown Menu -->
-                     
-                    <!-- Notifications Dropdown Menu -->
+ 
+                <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">  
                     <!-- <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <i class="far fa-bell"> <b>Alertas</b></i> 
@@ -141,25 +131,19 @@
                     
                 </ul>
             </div>
-        </nav>
-        <!-- /.navbar -->
+        </nav> 
 
         <div class="content-wrapper">
             <?= $this->section('content')?>
         </div>
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
+ 
+        <aside class="control-sidebar control-sidebar-dark"> 
             <div class="p-3">
                 <h5>Title</h5>
                 <p>Sidebar content</p>
             </div>
-        </aside>
-        <!-- /.control-sidebar -->
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
+        </aside> 
+        <footer class="main-footer"> 
             <?php
             if($_SESSION['logado']):
             ?>
@@ -168,22 +152,14 @@
             </div>
             <?php
                 endif
-            ?>
-            <!-- Default to the left -->
+            ?> 
             <strong>Copyright &copy; 2019-<?= date("Y")?> <a href="http://www.solartechsolutions.com.br" target="_blank" >Maciel Oliveira  </a> by <?= EMPRESA['nome'] ?> </strong> All rights
             reserved.
         </footer>
-    </div>
-    <!-- ./wrapper -->
-
-    <!-- REQUIRED SCRIPTS -->
-
-    <!-- jQuery -->
+    </div> 
     <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/jquery/jquery.min.js"></script>
-    <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
+    <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script> 
+    <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> 
     <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/datatables/jquery.dataTables.js"></script>
     <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
     <script src="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/dist/js/adminlte.min.js"></script>
@@ -194,11 +170,9 @@
     
     <?= $this->section('scripts')?> 
 <script>
-$(function () {
-    //Initialize Select2 Elements
+$(function () { 
     $('.select2').select2()
-
-    //Initialize Select2 Elements
+ 
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     })

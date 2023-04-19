@@ -9,7 +9,6 @@ use App\Models\Contato;
 use App\Models\Mensagem;
 use App\Models\Position;
 use App\Models\Atendimento;
-use Illuminate\Support\Facades\DB;
 
 class WebhookMsgController
 {
