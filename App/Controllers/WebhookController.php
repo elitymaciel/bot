@@ -6,7 +6,8 @@ use App\Helpers\Api;
 use App\Models\Chat;
 use App\Helpers\Util;
 use App\Models\Session;
-use App\Helpers\Response; 
+use App\Helpers\Response;
+use App\Models\Api as ModelsApi;
 
 class WebhookController
 {
@@ -16,18 +17,18 @@ class WebhookController
         $webhook = new Response($this->options());
         $util = new Util();
           if ($webhook->getEvent() == 'qrcode'):
-
-            $session = Session::where('id_session', $webhook->getSession())->count();
+            $api = ModelsApi::where('session', $webhook->getSession())->first();
+            $session = Session::where('id_session', $api->id)->count();
             
             if (empty($session) && $session == 0) {
                 Session::create([
-                    'id_session' => $webhook->getSession(),
+                    'id_session' => $api->id,
                     'type' => 'QrCode',
                     'urlcode' => $webhook->getUrlcode()
                 ]);
             } else {
-                Session::query('id_session', $webhook->getSession())->update([
-                    'id_session' => $webhook->getSession(),
+                Session::query('id_session', $api->id)->update([
+                    'id_session' => $api->id,
                     'type' => 'QrCode',
                     'urlcode' => $webhook->getUrlcode()
                 ]);
@@ -40,9 +41,10 @@ class WebhookController
             $consulta = Chat::query('id_session', $webhook->getSession())
                             ->first();
             if ($consulta) :
-                Session::query('id_session', $webhook->getSession())
+                $api = ModelsApi::where('session', $webhook->getSession())->first();
+                Session::query('id_session', $api->id)
                         ->update([
-                                    'id_session' => $webhook->getSession(),
+                                    'id_session' => $api->id,
                                     'type' => $webhook->getStatus(),
                                     'urlcode' => ' '
                                 ]);

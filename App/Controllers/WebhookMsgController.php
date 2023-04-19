@@ -2,10 +2,14 @@
 
 namespace App\Controllers;
 
-use App\Models\Chat;
 use App\Helpers\Api;
-use App\Models\Atendimento;
+use App\Models\Api as ModelsApi;
+use App\Models\Chat;
 use App\Models\Contato;
+use App\Models\Mensagem;
+use App\Models\Position;
+use App\Models\Atendimento;
+use Illuminate\Support\Facades\DB;
 
 class WebhookMsgController
 {
@@ -61,10 +65,29 @@ class WebhookMsgController
                     'status' => '1'
                 ]);
                 die;
-            }  
-            echo $send->sendMessage($webhook->getFrom(),'🥹 Ainda estou em teste aguarde....'."\n".'*9* - Para fala com atendende.😉', $webhook->getSession());
+            }
+
+            echo $send->sendMessage($webhook->getFrom(),'Olá,  Sou Assistente Virtual do Instituto PCEP', $webhook->getSession());
+            sleep(1);
+            echo $send->sendMessage($webhook->getFrom(),'Como posso ajudar? escolha algumas opção para lhe atender.. ', $webhook->getSession());
+            sleep(1);
+            $menu = Mensagem::distinct()->pluck('categoria');
+            $options = [];
+            foreach ($menu as $key => $categoria) {
+                $options[] = $key+1 .'- ' .ucfirst($categoria);
+            }
+            echo $send->sendMessage($webhook->getFrom(), implode("\n", $options ), $webhook->getSession());
             die;
         endif;
 
+    }
+
+    public function position(Array $data)
+    {
+        $apiConfig = ModelsApi::where('session', $data['session'])->first();
+        $resultPosition = Position::where('id_session', $apiConfig->id)
+                            ->where('telefone', $data['fone'])
+                            ->first();
+        return $resultPosition->posicao;
     }
 }

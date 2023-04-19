@@ -7,14 +7,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Mensagem extends Model
+class Config extends Model
 {
-    protected $table = 'mensagens';
+    protected $table = 'configuracoes';
     public $timestamps = false;
     protected $fillable = [
-        'id_session',
-        'categoria',
-        'item',
-        'valor' 
+        'config',
+        'valor'	
     ];
 }

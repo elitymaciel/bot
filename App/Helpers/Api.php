@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Api as ModelsApi;
 use App\Models\User;
 use Exception;
 use Dotenv\Dotenv;
@@ -11,7 +12,6 @@ use GuzzleHttp\Exception\RequestException;
 
 class Api
 {
-
     private $client;
     private $url; 
 
@@ -96,12 +96,12 @@ class Api
     public function sendMessage($phone, $message, $session)
     { 
          
-        $usuario = User::where('id_session', $session)->first();
+        $api = ModelsApi::where('session', $session)->first();
         $response = $this->client->request('POST', $this->url. $session .'/send-message', [
             'headers' => [
                 'Content-Type' => 'application/json', 
                 'Accept' => 'application/json',  
-                'Authorization' => 'Bearer ' . $usuario->token,
+                'Authorization' => 'Bearer ' . $api->token,
             ],'json' => [
                 'phone' => $phone,
                 'message' => $message,
@@ -116,12 +116,12 @@ class Api
      */
     public function allContacts($session)
     { 
-        $usuario = User::where('id_session', $session)->first();
+        $api = ModelsApi::where('session', $session)->first();
         $response = $this->client->request('GET', $this->url. $session .'/all-contacts', [
             'headers' => [
                 'Content-Type' => 'application/json', 
                 'Accept' => 'application/json',  
-                'Authorization' => 'Bearer ' . $usuario->token,
+                'Authorization' => 'Bearer ' . $api->token,
             ]
         ]);  
         return $response->getBody()->getContents(); 
@@ -130,12 +130,12 @@ class Api
     /* http://localhost:21465/api/teste/get-battery-level */
     public function battery_level($data)
     {
-        $usuario = User::where('id_session', $data['session'])->first();
+        $api = ModelsApi::where('session', $data['session'])->first(); 
         $response = $this->client->request('GET', $this->url. $data['session'] .'/get-battery-level', [
             'headers' => [
                 'Content-Type' => 'application/json', 
                 'Accept' => 'application/json',  
-                'Authorization' => 'Bearer ' . $usuario->token,
+                'Authorization' => 'Bearer ' . $api->token,
             ]
         ]);  
         return $response->getBody()->getContents(); 

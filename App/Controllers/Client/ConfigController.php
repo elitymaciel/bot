@@ -41,7 +41,7 @@ class ConfigController extends ClientController
             ]);
             echo  $status->start(['token' => $api->token, 'session' => $api->session]);
         }else {
-            Session::query('id_session', $api->session)->create([ 
+            Session::query('id_session',  $api->id)->create([ 
                 'id_session' => $api->id,
                 'type' => 'loding',
                 'urlcode' => 's'
