@@ -220,6 +220,13 @@ cursor: pointer;
   -webkit-box-shadow: 0 2px 20px 2px #43b993;
   box-shadow: 0 2px 20px 2px #43b993;
 }
+.drawflow > .drawflow-edit {
+  border: 2px solid #43b993;
+  background: white;
+  color: #43b993;
+  -webkit-box-shadow: 0 2px 20px 2px #43b993;
+  box-shadow: 0 2px 20px 2px #43b993;
+}
 
 .drawflow-delete {
   border: 2px solid #4ea9ff;
@@ -228,6 +235,14 @@ cursor: pointer;
   -webkit-box-shadow: 0 2px 20px 2px #4ea9ff;
   box-shadow: 0 2px 20px 2px #4ea9ff;
 }
+.drawflow-edit {
+  border: 2px solid #4ea9ff;
+  background: white;
+  color: #4ea9ff;
+  -webkit-box-shadow: 0 2px 20px 2px #4ea9ff;
+  box-shadow: 0 2px 20px 2px #4ea9ff;
+}
+
 
 .drawflow-node .title-box {
   height: 50px;

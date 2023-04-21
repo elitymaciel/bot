@@ -25,32 +25,19 @@ $this->layout('_themeAdmin', ['titulo' => 'Dashboard']) ?>
     </div>
   </div>
 
-  <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
-  </div>
+  <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  
+
 </div>
-<div class="modal fade" id="dbclick2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="">Deseja realmente Excluir?</span>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
-        <button type="button" class="btn btn-danger" id="confirm-delete-butoon">Sim</button>
-      </div>
-    </div>
-  </div>
-</div>
+ 
 <?php $this->push('scripts') ?>
-<script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+<script src="<?= SITE['base_url'] ?>public/assets/js/drawflow.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow@0.0.48/dist/drawflow.min.css">
-<link rel="stylesheet" type="text/css" href="http://localhost/painelwhatspp.local/public/assets/css/beautiful.css" />
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+<link rel="stylesheet" href="<?= SITE['base_url'] ?>public/assets/css/drawflow.min.css">
+<link rel="stylesheet" type="text/css" href="<?= SITE['base_url'] ?>public/assets/css/beautiful.css" />
+ 
 <script src="<?= SITE['base_url'] ?>public/assets/pages/chatbot.js"></script>
-<script src="<?= SITE['base_url'] ?>public/assets/pages/chatbotCreateNode.js"></script>
+<script src="<?= SITE['base_url'] ?>public/assets/pages/chatbotCreateNode.js"></script> 
 <script>
   function atualizarConteudo() { 
 			var xhttp = new XMLHttpRequest();
@@ -69,5 +56,6 @@ $this->layout('_themeAdmin', ['titulo' => 'Dashboard']) ?>
 			// Envie a solicitação para a fonte externa
 			xhttp.send();
 		}
-</script> 
+   
+</script>   
 <?php $this->end() ?>

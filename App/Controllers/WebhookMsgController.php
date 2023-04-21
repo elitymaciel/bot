@@ -2,91 +2,174 @@
 
 namespace App\Controllers;
 
+use Carbon\Carbon;
 use App\Helpers\Api;
-use App\Models\Api as ModelsApi;
 use App\Models\Chat;
-use App\Models\Contato;
 use App\Models\Mensagem;
 use App\Models\Position;
-use App\Models\Atendimento;
+use App\Models\Api as ModelsApi;
 
 class WebhookMsgController
 {
     public function mensagens($webhook)
     {
-         
+
         # Message
         if ($webhook->getEvent() == 'onmessage' and $webhook->getType() == 'chat') :
-            $send = new Api(); 
-            /* $resposta = json_decode($send->chatGPT($webhook->getContent())); 
-            echo $send->sendMessage($webhook->getFrom(), $resposta->choices[0]->message->content, $webhook->getSession());
-            die; */
+            $send = new Api();
+            $apiConfig = ModelsApi::where('session', $webhook->getSession())->first();
+            $data = [
+                'apiId' => $apiConfig->id,
+                'session' => $webhook->getSession(),
+                'foneClient' => $webhook->getFrom()
+            ];
+            $positionNunber = $this->position($data);
             Chat::create([
-                    'session' => $webhook->getSession(),
-                    'content' => $webhook->getContent(),
-                    'from_number' => $webhook->getFrom(),
-                    'to_number' => $webhook->getTo(),
-                    'type' => $webhook->getType(),
-                ]); 
-            $contatos = Contato::where('session', $webhook->getSession())
-                                ->where('telefone', $webhook->getFrom())
-                                ->count();
-            if($contatos == 0){
-                $email = filter_var($webhook->getContent(), FILTER_SANITIZE_EMAIL);
-                if(filter_var($email, FILTER_VALIDATE_EMAIL)):
-                    echo $send->sendMessage($webhook->getFrom(),'Pronto ❤️', $webhook->getSession());
-                    if (!$contatos):
-                        Contato::create([
-                            'session' => $webhook->getSession(),
-                            'nome'  => $webhook->getSenderShortName(),
-                            'email' => $webhook->getContent(),
-                            'telefone' => $webhook->getFrom()
-                        ]); 
-                    die; 
-                    endif;
-                    endif;
-                if(strcasecmp($webhook->getContent(), 'SIM') == 0){
-                    echo $send->sendMessage($webhook->getFrom(),'OK, qual seu E-mail?', $webhook->getSession());
+                'session' => $webhook->getSession(),
+                'content' => $webhook->getContent(),
+                'from_number' => $webhook->getFrom(),
+                'to_number' => $webhook->getTo(),
+                'type' => $webhook->getType(),
+            ]);
+            if (!$positionNunber) {
+                Position::create([
+                    'id_session' =>  $data['apiId'],
+                    'telefone' => $data['foneClient'],
+                    'posicao' => 'menu-1'
+                ]);
+            }
+            $statusCode = $this->position($data);
+
+            if (!empty($statusCode->valor)) {
+                $mensagems = Mensagem::where('categoria', $statusCode->valor)
+                    ->where('id_session', $data['apiId'])
+                    ->distinct()
+                    ->pluck('item');
+                foreach ($mensagems as $key => $option) {
+                    $options[$key + 1] = $key + 1 . '- ' . ucfirst($option);
+                }
+
+                if (array_key_exists(intval($webhook->getContent()), $options)) {
+                    if (explode('- ', $options[$webhook->getContent()])[1] == 'Voltar') {
+                        Position::where('id_session', $data['apiId'])
+                            ->where('telefone', $data['foneClient'])
+                            ->update([
+                                'valor' => ''
+                            ]);
+                        $this->default($data);
+                    }
+                    echo $send->sendMessage($data['foneClient'], explode('- ', $options[$webhook->getContent()])[1], $data['session']);
+                    die;
+                } else {
+                    echo $send->sendMessage($data['foneClient'], 'Não intendi. Escolha algumas opção para poder ajudar.. ', $data['session']);
+                    sleep(1);
+                    echo $send->sendMessage($data['foneClient'], implode("\n", $options), $data['session']);
                     die;
                 }
-                echo $send->sendMessage($webhook->getFrom(),'Você não esta em nosso banco de dados 🥲.'."\n".'Podemos deixa salvo pra min lembra de vc da proxima vez?😉 *SIM*', $webhook->getSession());
-                die;
-                
-            } 
-            if($webhook->getContent() == '9'){
-                echo $send->sendMessage($webhook->getFrom(),'Não posso falar agora', $webhook->getSession());
-                $atendimento = Contato::where('session', $webhook->getSession())
-                                                        ->where('cliente', $webhook->getFrom())
-                                                        ->count();
-                Atendimento::create([
-                    'session' => $webhook->getSession(),
-                    'cliente' => $webhook->getFrom(),
-                    'status' => '1'
-                ]);
-                die;
+            } else {
+                $mensagems = Mensagem::where('valor', $statusCode->posicao)
+                    ->where('id_session', $data['apiId'])
+                    ->distinct()
+                    ->pluck('categoria');
             }
 
-            echo $send->sendMessage($webhook->getFrom(),'Olá,  Sou Assistente Virtual do Instituto PCEP', $webhook->getSession());
-            sleep(1);
-            echo $send->sendMessage($webhook->getFrom(),'Como posso ajudar? escolha algumas opção para lhe atender.. ', $webhook->getSession());
-            sleep(1);
-            $menu = Mensagem::distinct()->pluck('categoria');
             $options = [];
-            foreach ($menu as $key => $categoria) {
-                $options[] = $key+1 .'- ' .ucfirst($categoria);
+            foreach ($mensagems as $key => $option) {
+                $options[$key + 1] = $option;
             }
-            echo $send->sendMessage($webhook->getFrom(), implode("\n", $options ), $webhook->getSession());
-            die;
-        endif;
 
+            if (array_key_exists(intval($webhook->getContent()), $options)) {
+                $this->options($options[$webhook->getContent()], $data);
+            } else {
+                $this->default($data);
+            }
+
+
+
+
+        /* if ($webhook->getContent() == $key + 1 ) {
+                $this->options($categoria->categoria, $data);
+            }else {
+                $this->default($data);
+            } */
+        /* $message = match ($statusCode->posicao) { 
+                default => ,
+            }; */
+        endif;
     }
 
-    public function position(Array $data)
+    public function options($result, $data)
     {
-        $apiConfig = ModelsApi::where('session', $data['session'])->first();
-        $resultPosition = Position::where('id_session', $apiConfig->id)
-                            ->where('telefone', $data['fone'])
-                            ->first();
-        return $resultPosition->posicao;
+        $send = new Api();
+        Position::where('id_session', $data['apiId'])
+            ->where('telefone', $data['foneClient'])
+            ->update([
+                'valor' => $result
+            ]);
+        $menuOptions =  Mensagem::where('categoria', $result)
+            ->where('id_session', $data['apiId'])
+            ->distinct()
+            ->pluck('item');
+        $options = [];
+        foreach ($menuOptions as $key => $option) {
+            $options[] = $key + 1 . '- ' . ucfirst($option);
+        }
+        echo $send->sendMessage($data['foneClient'], implode("\n", $options), $data['session']);
+        die;
+    }
+
+    public function menu()
+    {
+        $menu = Mensagem::where('valor', 'menu-1')->distinct()->pluck('categoria');
+        $options = [];
+        foreach ($menu as $key => $categoria) {
+            $options[] = $key + 1 . '- ' . ucfirst($categoria);
+        }
+    }
+
+
+    public function default($data)
+    {
+        $horaAtual = Carbon::now()->hour;
+        $send = new Api();
+        $menu = Mensagem::distinct()->pluck('categoria');
+        $consult = Position::where('id_session', $data['apiId'])
+            ->where('telefone', $data['foneClient'])
+            ->first();
+        if ($horaAtual >= 0 && $horaAtual < 6) {
+            $saudacao = 'Boa noite!';
+        } elseif ($horaAtual >= 6 && $horaAtual < 12) {
+            $saudacao = 'Bom dia!';
+        } elseif ($horaAtual >= 12 && $horaAtual < 18) {
+            $saudacao = 'Boa tarde!';
+        } else {
+            $saudacao = 'Boa noite!';
+        }
+         
+        if ($consult->updated_at->diffInHours(Carbon::now()) < 1) { 
+            echo $send->sendMessage($data['foneClient'], $saudacao .'Escolha algumas opção para lhe atender.. ', $data['session']);
+            sleep(1);
+        } else {
+            echo $send->sendMessage($data['foneClient'], 'Olá, Sou uma Assistente Virtual do Instituto PCEP', $data['session']);
+            sleep(1);
+            echo $send->sendMessage($data['foneClient'], $saudacao .' Como posso ajudar? escolha algumas opção para lhe atender.. ', $data['session']);
+            sleep(1);
+        }
+
+
+        $options = [];
+        foreach ($menu as $key => $categoria) {
+            $options[] = $key + 1 . '- ' . ucfirst($categoria);
+        }
+        echo $send->sendMessage($data['foneClient'], implode("\n", $options), $data['session']);
+        die;
+    }
+
+    public function position(array $data)
+    {
+        $resultPosition = Position::where('id_session', $data['apiId'])
+            ->where('telefone', $data['foneClient'])
+            ->first();
+        return $resultPosition;
     }
 }
