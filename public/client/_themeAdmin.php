@@ -7,7 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title><?=$this->e($titulo)?> | <?=$this->e($empresa)?></title>
- 
+    <link href="<?= SITE["base_url"] ?>public/assets/web/img/favicon.png" rel="icon">
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css"> 
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/menu_cursos.css"> 

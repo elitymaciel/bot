@@ -7,8 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title><?=$this->e($titulo)?> | <?=$this->e($empresa)?></title>
-
-    <!-- Font Awesome Icons -->
+ 
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= SITE["base_url"]?>vendor/almasaeed2010/adminlte/dist/css/adminlte.min.css">

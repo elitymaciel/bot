@@ -169,8 +169,5 @@ $this->layout('_themeAdmin', ['titulo' => 'Configuração']) ?>
 <script src="<?= SITE["base_url"] ?>public/assets/js/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.min.js" ></script>
 <script src="<?= SITE["base_url"] ?>public/assets/pages/config.js"></script>
-<script>
-   const url = window.location.origin + window.location.pathname + '/start';
-   console.log(url);
-</script>
+ 
 <?php $this->end() ?>
