@@ -37,13 +37,15 @@ $router->get("/config/sessions", "ConfigController:sessions");
 $router->get("/config/start", "ConfigController:start");
 $router->get("/config/qrcode", "ConfigController:qrcode");
 
-$router->get("/chatbot", "BotController:index"); 
-$router->post("/chatbot", "BotController:front");
+$router->get("/chatbot", "BotController:index");
+$router->post("/chatbot/menubot", "BotController:menuBot");
+
+/*$router->post("/chatbot", "BotController:front");
 $router->get("/chatbot/mensagens", "BotController:menssage");
 $router->get("/chatbot/tabela", "BotController:tabela");
 $router->get("/chatbot/drawflow", "BotController:drawflow");
 $router->post("/chatbot/drawflowresourse", "BotController:drawflowResourse");
-$router->post("/chatbot/mensagens", "BotController:menssage");
+$router->post("/chatbot/mensagens", "BotController:menssage"); */
  
 $router->get("/atendimento", "AtendimentoController:index");
 $router->get("/atendimento/listacontato", "AtendimentoController:listaContatos");

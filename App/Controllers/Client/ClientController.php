@@ -9,7 +9,8 @@ class ClientController
 {
     private $view;
     private $templateError;
-    private $router; 
+    private $router;
+    public array $dados;
       
     public function __construct()
     {
