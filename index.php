@@ -38,7 +38,9 @@ $router->get("/config/start", "ConfigController:start");
 $router->get("/config/qrcode", "ConfigController:qrcode");
 
 $router->get("/chatbot", "BotController:index");
+$router->post("/chatbot/consultMenu", "BotController:menuConsult");
 $router->post("/chatbot/menubot", "BotController:menuBot");
+$router->post("/chatbot/edit", "BotController:menuEdit");
 
 /*$router->post("/chatbot", "BotController:front");
 $router->get("/chatbot/mensagens", "BotController:menssage");

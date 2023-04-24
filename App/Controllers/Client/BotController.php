@@ -17,27 +17,45 @@ class BotController extends ClientController
         $user = User::where('email', $_SESSION['email'])->first();
         $apiConfig = Api::where('user_id', $user->id)->first();
 
-        $mensagems = Mensagem::where('id_session', $apiConfig->id)
-            ->distinct()
-            ->pluck('categoria'); 
+        $mensagems = Mensagem::where('id_session', $apiConfig->id)->get();
+             
         echo $this->view()->render("chatbot", [
             'mensagems' => $mensagems
         ]);
     }
 
-    public function menuBot($data)
+    public function menuBot($request)
     {    
         $user = User::where('email', $_SESSION['email'])->first();
         $apiConfig = Api::where('user_id', $user->id)->first();
         $mensagems = Mensagem::where('id_session', $apiConfig->id)
-            ->where('categoria', $data['nome'])->get();
-            /* ->distinct()
-            ->pluck('item'); */
-            $options = [];
+            ->where('categoria', $request['nome'])->get(); 
+        $options = [];
         foreach ($mensagems as $key => $option) {
             $options[] = $option;
         } 
         header('Content-Type: application/json');
         echo json_encode($options);
+    }
+
+    public function menuConsult($request)
+    {
+        print_r($request);
+    }
+
+    public function menuEdit($request)
+    { 
+        $user = User::where('email', $_SESSION['email'])->first();
+        $apiConfig = Api::where('user_id', $user->id)->first();
+        $mensagems = Mensagem::where('id_session', $apiConfig->id)
+            ->where('categoria', $request['EditIdNome'])->get();
+            
+        foreach ($mensagems as $key => $option) {
+            Mensagem::where('id_session', $apiConfig->id)
+                            ->where('id', $option->id)
+                            ->update(['categoria' => $request['EditInputNome']]);
+        } 
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'Atualizado Com sucesso.']);
     }
 }

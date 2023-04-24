@@ -1,5 +1,7 @@
 <?php
 $this->layout('_themeAdmin', ['titulo' => 'Dashboard']) ?>
+ 
+
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">
@@ -24,17 +26,26 @@ $this->layout('_themeAdmin', ['titulo' => 'Dashboard']) ?>
             <div class="card-header border-0">
               <div class="d-flex justify-content-between">
                 <h3 class="card-title">Menu Principal</h3>
-                <button type="button" class="btn btn-primary float-right ml-2 mr-2">
-                  Add
+                <button type="button" id="menuPrincipal" class="btn btn-primary float-right ml-2 mr-2">
+                  Visualizar
                 </button>
               </div>
             </div>
             <div class="card-body">
-              <?php $options = [];
-              foreach ($mensagems as $key => $option) : ?>
+              <?php 
+              $options = [];
+
+              foreach ($mensagems as $key => $mensagem) :
+                if (!in_array($mensagem->categoria, $options)) :
+                  $options[] = $mensagem->categoria;
+                endif;
+              endforeach;
+              ?>
+
+              <?php foreach ($options as $key => $categoria) : ?>
                 <ul class="todo-list ui-sortable" data-widget="todo-list">
                   <li style="cursor:pointer ">
-                    <span class="text" ><?= $key + 1 . ' - ' . $option ?></span>
+                    <span class="text"><?= $key + 1 . ' - ' .  $categoria ?></span>
                     <div class="tools">
                       <i class="fas fa-edit"></i>
                       <i class="fas fa-trash"></i>
@@ -60,7 +71,7 @@ $this->layout('_themeAdmin', ['titulo' => 'Dashboard']) ?>
                 </div>
               </div>
             </div>
-            <div class="card-body minhalista"> 
+            <div class="card-body minhalista">
             </div>
           </div>
         </div>
@@ -80,16 +91,63 @@ $this->layout('_themeAdmin', ['titulo' => 'Dashboard']) ?>
               </div>
             </div>
             <div class="card-body">
-              asdf
+             
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
-<?php $this->push('scripts') ?> 
-<script src="<?= SITE['base_url'] ?>public/assets/pages/bot.js"></script> 
+<div class="modal fade" id="edit_menu1" tabindex="-1" role="dialog" aria-labelledby="edit_menu1_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="edit_menu1_label">Editar Anotação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditMenu1">
+          <input type="hidden" id="EditIdNome" name="EditIdNome">
+          <div class="form-group">
+            <label for="EditInputNome">Nome:</label>
+            <input type="text" id="EditInputNome" name="EditInputNome" class="form-control">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary btn-3d" form="formEditMenu1">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="modal-title"><i class="fas fa-exclamation-circle mr-2"></i>Deseja realmente excluir?</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta ação não pode ser desfeita.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-3d" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger btn-3d" id="confirm-delete-butoon">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?php $this->push('scripts') ?>
+<script src="<?= SITE['base_url'] ?>public/assets/pages/bot.js"></script>
 <?php $this->end() ?>
