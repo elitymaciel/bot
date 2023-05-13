@@ -59,7 +59,10 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a href="<?= SITE['base_url']?>admin" class="nav-link">Home</a>
-                        </li> 
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= SITE['base_url']?>admin\web" class="nav-link">Site Web</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false" class="nav-link dropdown-toggle">Cadastro</a>
@@ -67,6 +70,7 @@
                                 <li><a href="<?= SITE["base_url"] ?>admin\users" class="dropdown-item">Usuarios</a></li>
                             </ul>
                         </li>
+
                     </ul>
  
                 </div>

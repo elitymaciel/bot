@@ -37,8 +37,8 @@
               </div>
             </div>
             <div class="card-body p-0">
-              <ul class="nav nav-pills flex-column" id="contato">
-                <?php foreach ($atendimentos as $contato) : ?>
+              <ul class="nav nav-pills flex-column" id="contato"> 
+                <!-- <?php foreach ($atendimentos as $contato) : ?>
                   <li class="nav-item active">
                     <a href="#" class="nav-link">
                       <i class="fas fa-circle <?= $contato->status ? "text-success" : "text-danger" ?>"></i>
@@ -46,7 +46,16 @@
                         <i class="far fa-clock"></i> <?= $contato->status ? "Aguardando Atendimento" : "" ?></small>
                     </a>
                   </li>
-                <?php endforeach ?>
+                <?php endforeach ?>   -->
+                <?php foreach ($chats as $contato) : ?>
+                  <li class="nav-item active">
+                    <a href="#" class="nav-link">
+                      <i class="fas fa-circle <?= $contato->type ? "text-success" : "text-danger" ?>"></i>
+                      <?= $contato->from_number ?> <small class="badge <?= $contato->status ? 'badge-success' : 'badge-danger' ?>  float-right" id="servicoAlert">
+                        <i class="far fa-clock"></i> <?= $contato->status ? "Aguardando Atendimento" : "" ?></small>
+                    </a>
+                  </li>
+                <?php endforeach ?> 
               </ul>
             </div>
           </div>

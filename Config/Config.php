@@ -10,6 +10,7 @@ echo '</div>';
 
 ini_set('error_reporting', E_ALL);
 error_reporting(E_ALL);
+
  
 define('DEBUG_MODE', true); 
 if (DEBUG_MODE) { 

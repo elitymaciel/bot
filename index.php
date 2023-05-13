@@ -16,18 +16,20 @@ $router->namespace("App\Controllers");
  
  
 $router->group("/"); 
-$router->get("/", "WebController:index"); 
- 
+$router->get("/", "WebController:index");  
+$router->get("/home", "WebController:home"); 
 $router->group("api"); 
 $router->post("/webhook", "WebhookController:index"); 
 
 
 $router->group("/admin")->namespace("App\Controllers\Admin");
-$router->get("/", "DashboardController:home");  
+$router->get("/", "DashboardController:home");
+/* user */
 $router->get("/users", "UserController:index");
 $router->post("/users/token", "UserController:geraToken");
 $router->post("/users/cadastro", "UserController:cadastro");
-
+/* web */
+$router->get("/web", "WebController:index");
 
 $router->group("/client")->namespace("App\Controllers\Client");
 $router->get("/", "DashboardController:home");

@@ -11,4 +11,9 @@ class WebController extends Controller
     {
         echo $this->view()->render("home");
     }
+
+    public function home()
+    {
+        echo $this->view()->render("options");
+    }
 }

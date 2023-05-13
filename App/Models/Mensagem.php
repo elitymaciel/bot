@@ -15,6 +15,7 @@ class Mensagem extends Model
         'id_session',
         'categoria',
         'item',
+        'item2',
         'valor' 
     ];
 }
